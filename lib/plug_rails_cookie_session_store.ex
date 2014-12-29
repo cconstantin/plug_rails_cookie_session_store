@@ -44,7 +44,7 @@ defmodule PlugRailsCookieSessionStore do
   ## Examples
 
       # Use the session plug with the table name
-      plug Plug.Session, store: :cookie,
+      plug Plug.Session, store: PlugRailsCookieSessionStore,
                          key: "_my_app_session",
                          encryption_salt: "cookie store encryption salt",
                          signing_salt: "cookie store signing salt",
