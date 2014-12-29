@@ -6,7 +6,7 @@ defmodule PlugRailsCookieSessionStore.MessageVerifierTest do
   test "generates a signed message" do
     [content, encoded] = String.split MV.sign("hello world", "secret"), "--"
     assert content |> Base.decode64 == {:ok, "hello world"}
-    assert byte_size(encoded) == 28
+    assert byte_size(encoded) == 40
   end
 
   test "verifies a signed message" do

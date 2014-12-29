@@ -32,6 +32,6 @@ defmodule PlugRailsCookieSessionStore.MessageVerifier do
   end
 
   defp digest(secret, data) do
-    :crypto.hmac(:sha, secret, data) |> Base.encode64
+    :crypto.hmac(:sha, secret, data) |> Base.encode16(case: :lower)
   end
 end

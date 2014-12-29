@@ -55,8 +55,8 @@ defmodule PlugRailsCookieSessionStore do
   @behaviour Plug.Session.Store
 
   alias Plug.Crypto.KeyGenerator
-  alias Plug.Crypto.MessageVerifier
-  alias Plug.Crypto.MessageEncryptor
+  alias PlugRailsCookieSessionStore.MessageVerifier
+  alias PlugRailsCookieSessionStore.MessageEncryptor
 
   def init(opts) do
     encryption_salt = check_encryption_salt(opts)
