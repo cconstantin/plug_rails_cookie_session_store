@@ -80,6 +80,7 @@ defmodule PlugRailsCookieSessionStore do
 
   def get(conn, cookie, opts) do
     key_opts = opts.key_opts
+    cookie = cookie |> URI.decode_www_form
     if key = opts.encryption_salt do
       MessageEncryptor.verify_and_decrypt(cookie,
                                           derive(conn, key, key_opts),
@@ -99,7 +100,7 @@ defmodule PlugRailsCookieSessionStore do
                                         derive(conn, opts.signing_salt, key_opts))
     else
       MessageVerifier.sign(binary, derive(conn, opts.signing_salt, key_opts))
-    end
+    end |> URI.encode_www_form
   end
 
   def delete(_conn, _sid, _opts) do
