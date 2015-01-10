@@ -42,7 +42,7 @@ Edit the `endpoint.ex` file and add the following:
 # ...
 plug Plug.Session,
   store: PlugRailsCookieSessionStore,
-  key: "_rails_session_key",
+  key: "_SOMETHING_HERE_session",
   domain: '.myapp.com',
   secure: true,
   signing_salt: "signing salt",
@@ -55,7 +55,7 @@ plug Plug.Session,
 end
 ```
 
-#### That's it
+#### That's it!
 
 To test it, set a session value in your Rails application:
 
