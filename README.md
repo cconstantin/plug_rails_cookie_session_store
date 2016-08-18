@@ -5,16 +5,7 @@ Rails compatible Plug session store.
 
 This allows you to share session information between Rails and a Plug-based framework like Phoenix.
 
-> Note: The information stored in the session cookie is serialized by Rails. Prior to version 4.1, this information was serialized using Ruby's Marshal format. Since Elixir can't (yet!) read Marshal format we have to configure Rails to serialize its cookie information with its Json Serializer.
-
 ## How to use with Phoenix
-#### Set Rails serialization format to JSON
-
-In an initialer of your Rails project make sure you set the serializer to JSON:
-
-```ruby
-Rails.application.config.action_dispatch.cookies_serializer = :json
-```
 
 #### Copy/share the encryption information from Rails to Phoenix.
 
@@ -51,9 +42,58 @@ plug Plug.Session,
   key_iterations: 1000,
   key_length: 64,
   key_digest: :sha,
-  serializer: Poison
+  serializer: Poison # see serializer details below
 end
 ```
+
+#### Set up a serializer
+
+Plug & Rails must use the same strategy for serializing cookie data.
+
+- __JSON__: Since 4.1, Rails defaults to serializing cookie data with JSON. Support this strategy by getting a JSON serializer and passing it to `Plug.Session`. For example, add `Poison` to your dependencies, then:
+
+  ```elixir
+  plug Plug.Session,
+    store: PlugRailsCookieSessionStore,
+    # ... see encryption config above
+    serializer: Poison
+  end
+  ```  
+
+  You can confirm that your app uses JSON by searching for
+
+  ```ruby
+  Rails.application.config.action_dispatch.cookies_serializer = :json
+  ```
+
+  in an initializer.
+
+- __Marshal__: Previous to 4.1, Rails defaulted to Ruby's [`Marshal` library](http://ruby-doc.org/core-2.3.0/Marshal.html) for serializing cookie data. You can deserialize this by adding [`ExMarshal`](https://hex.pm/packages/ex_marshal) to your project and defining a serializer module:
+
+  ```elixir
+  defmodule RailsMarshalSessionSerializer do
+    @moduledoc """
+    Share a session with a Rails app using Ruby's Marshal format.
+    """
+    def encode(value) do
+      {:ok, ExMarshal.encode(value)}
+    end
+
+    def decode(value) do
+      {:ok, ExMarshal.decode(value)}
+    end
+  end
+  ```
+
+  Then, pass that module as a serializer to `Plug.Session`:
+
+  ```elixir
+  plug Plug.Session,
+    store: PlugRailsCookieSessionStore,
+    # ... see encryption config above
+    serializer: RailsMarshalSessionSerializer
+  end
+  ```
 
 #### That's it!
 
