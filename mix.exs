@@ -3,7 +3,7 @@ defmodule PlugRailsCookieSessionStore.Mixfile do
 
   def project do
     [app: :plug_rails_cookie_session_store,
-     version: "0.1.0",
+     version: "0.1.1",
      elixir: "~> 1.0",
      description: description(),
      package: package(),
@@ -19,7 +19,10 @@ defmodule PlugRailsCookieSessionStore.Mixfile do
   end
 
   defp package do
-    [contributors: ["Chris Constantin"],
+    [
+     name: :plug_rails_cookie_session_store,
+     files: ["lib", "mix.exs", "README*", "LICENSE*"],
+     maintainers: ["Chris Constantin"],
      licenses: ["MIT"],
      links: %{"Github" => "https://github.com/cconstantin/plug_rails_cookie_session_store"}]
   end
@@ -27,6 +30,6 @@ defmodule PlugRailsCookieSessionStore.Mixfile do
   defp deps do
     [{:cowboy,  "~> 1.0", optional: true},
      {:plug,    ">= 0.9.0"},
-     {:ex_doc,  github: "elixir-lang/ex_doc"}]
+     {:ex_doc,  ">= 0.0.0", only: :dev}]
   end
 end

@@ -1,0 +1,300 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.14.5">
+    <title>PlugRailsCookieSessionStore – plug_rails_cookie_session_store v0.1.1</title>
+    <link rel="stylesheet" href="dist/app-a07cea761b.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/plug_rails_cookie_session_store/PlugRailsCookieSessionStore.html" />
+    
+    <script src="dist/sidebar_items-dd843db623.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="api-reference.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        plug_rails_cookie_session_store
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v0.1.1
+      </h2>
+    </div>
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">plug_rails_cookie_session_store v0.1.1</small>
+        PlugRailsCookieSessionStore
+        
+        
+      </h1>
+
+      
+        <section id="moduledoc">
+          <p>Stores the session in a cookie.</p>
+<p>This cookie store is based on <a href="https://hexdocs.pm/plug/1.3.0/Plug.Crypto.MessageVerifier.html"><code class="inline">Plug.Crypto.MessageVerifier</code></a>
+and <code class="inline">Plug.Crypto.Message.Encryptor</code> which encrypts and signs
+each cookie to ensure they can’t be read nor tampered with.</p>
+<p>Since this store uses crypto features, it requires you to
+set the <code class="inline">:secret_key_base</code> field in your connection. This
+can be easily achieved with a plug:</p>
+<pre><code class="elixir">plug :put_secret_key_base
+
+def put_secret_key_base(conn, _) do
+  put_in conn.secret_key_base, &quot;-- LONG STRING WITH AT LEAST 64 BYTES --&quot;
+end</code></pre>
+<h2 id="module-options" class="section-heading">
+  <a href="#module-options" class="hover-link"><i class="icon-link"></i></a>
+  Options
+</h2>
+
+<ul>
+<li><p><code class="inline">:encrypt</code> - specify whether to encrypt cookies, defaults to true.
+  When this option is false, the cookie is still signed, meaning it
+  can’t be tempered with but its contents can be read;</p>
+</li>
+<li><p><code class="inline">:encryption_salt</code> - a salt used with <code class="inline">conn.secret_key_base</code> to generate
+  a key for encrypting/decrypting a cookie;</p>
+</li>
+<li><p><code class="inline">:signing_salt</code> - a salt used with <code class="inline">conn.secret_key_base</code> to generate a
+  key for signing/verifying a cookie;</p>
+</li>
+<li><p><code class="inline">:key_iterations</code> - option passed to <a href="https://hexdocs.pm/plug/1.3.0/Plug.Crypto.KeyGenerator.html"><code class="inline">Plug.Crypto.KeyGenerator</code></a>
+  when generating the encryption and signing keys. Defaults to 1000;</p>
+</li>
+<li><p><code class="inline">:key_length</code> - option passed to <a href="https://hexdocs.pm/plug/1.3.0/Plug.Crypto.KeyGenerator.html"><code class="inline">Plug.Crypto.KeyGenerator</code></a>
+  when generating the encryption and signing keys. Defaults to 32;</p>
+</li>
+<li><p><code class="inline">:key_digest</code> - option passed to <a href="https://hexdocs.pm/plug/1.3.0/Plug.Crypto.KeyGenerator.html"><code class="inline">Plug.Crypto.KeyGenerator</code></a>
+  when generating the encryption and signing keys. Defaults to <code class="inline">:sha256&#39;;
+
+*</code>:serializer<code class="inline">- cookie serializer module that defines</code>encode/1<code class="inline">and</code>decode/1<code class="inline">returning an</code>{:ok, value}<code class="inline">tuple. Defaults to</code>:external_term_format`.
+
+## Examples
+
+    # Use the session plug with the table name
+    plug Plug.Session, store: PlugRailsCookieSessionStore,
+                       key: “_my_app_session”,
+                       encryption_salt: “cookie store encryption salt”,
+                       signing_salt: “cookie store signing salt”,
+                       key_length: 64,
+                       serializer: Poison</p>
+</li>
+</ul>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#delete/3">delete(conn, sid, opts)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Removes the session associated with given session id from the store</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get/3">get(conn, cookie, opts)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Parses the given cookie</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#init/1">init(opts)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Initializes the store</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#put/4">put(conn, sid, term, opts)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Stores the session associated with given session id</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="delete/3">
+  
+  <div class="detail-header">
+    <a href="#delete/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">delete(conn, sid, opts)</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Removes the session associated with given session id from the store.</p>
+<p>Callback implementation for <a href="https://hexdocs.pm/plug/1.3.0/Plug.Session.Store.html#c:delete/3"><code class="inline">Plug.Session.Store.delete/3</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="get/3">
+  
+  <div class="detail-header">
+    <a href="#get/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get(conn, cookie, opts)</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Parses the given cookie.</p>
+<p>Returns a session id and the session contents. The session id is any
+value that can be used to identify the session by the store.</p>
+<p>The session id may be nil in case the cookie does not identify any
+value in the store. The session contents must be a map.</p>
+<p>Callback implementation for <a href="https://hexdocs.pm/plug/1.3.0/Plug.Session.Store.html#c:get/3"><code class="inline">Plug.Session.Store.get/3</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="init/1">
+  
+  <div class="detail-header">
+    <a href="#init/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">init(opts)</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Initializes the store.</p>
+<p>The options returned from this function will be given
+to <a href="#get/3"><code class="inline">get/3</code></a>, <a href="#put/4"><code class="inline">put/4</code></a> and <a href="#delete/3"><code class="inline">delete/3</code></a>.</p>
+<p>Callback implementation for <a href="https://hexdocs.pm/plug/1.3.0/Plug.Session.Store.html#c:init/1"><code class="inline">Plug.Session.Store.init/1</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="put/4">
+  
+  <div class="detail-header">
+    <a href="#put/4" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">put(conn, sid, term, opts)</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Stores the session associated with given session id.</p>
+<p>If <code class="inline">nil</code> is given as id, a new session id should be
+generated and returned.</p>
+<p>Callback implementation for <a href="https://hexdocs.pm/plug/1.3.0/Plug.Session.Store.html#c:put/4"><code class="inline">Plug.Session.Store.put/4</code></a>.</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.5),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-4aef34ad5f.js"></script>
+  </body>
+</html>
+
