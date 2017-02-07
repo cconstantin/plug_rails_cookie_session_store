@@ -128,8 +128,11 @@ defmodule PlugRailsCookieSessionStore do
   defp derive(conn, key, key_opts) do
     conn.secret_key_base
     |> validate_secret_key_base()
-    |> KeyGenerator.generate(key, key_opts)
+    |> generate_key(key, key_opts)
   end
+
+  defp generate_key(secret, nil, _), do: secret
+  defp generate_key(secret, key, key_opts), do: KeyGenerator.generate(secret, key, key_opts)
 
   defp validate_secret_key_base(nil), do:
     raise(ArgumentError, "cookie store expects conn.secret_key_base to be set")
@@ -139,9 +142,11 @@ defmodule PlugRailsCookieSessionStore do
     secret_key_base
 
   defp check_signing_salt(opts) do
-    case opts[:signing_salt] do
-      nil  -> raise ArgumentError, "cookie store expects :signing_salt as option"
-      salt -> salt
+    if Keyword.get(opts, :signing_with_salt, true) do
+      case opts[:signing_salt] do
+        nil  -> raise ArgumentError, "cookie store expects :signing_salt as option"
+        salt -> salt
+      end
     end
   end
 

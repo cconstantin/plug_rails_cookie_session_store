@@ -13,6 +13,7 @@ defmodule PlugRailsCookieSessionStoreTest do
 
   @secret String.duplicate("abcdef0123456789", 8)
   @signing_opts Plug.Session.init(Keyword.put(@default_opts, :encrypt, false))
+  @signing_without_salt_opts Plug.Session.init(Keyword.put(@default_opts, :signing_with_salt, false))
   @encrypted_opts Plug.Session.init(@default_opts)
 
   defmodule CustomSerializer do
@@ -107,6 +108,14 @@ defmodule PlugRailsCookieSessionStoreTest do
     assert is_binary(cookie)
     assert CookieStore.get(conn, cookie, @signing_opts.store_config) == {nil, %{foo: :bar}}
   end
+
+  test "session cookies are signed without salt" do
+    conn = %{secret_key_base: @secret}
+    cookie = CookieStore.put(conn, nil, %{foo: :bar}, @signing_without_salt_opts.store_config)
+    assert is_binary(cookie)
+    assert CookieStore.get(conn, cookie, @signing_without_salt_opts.store_config) == {nil, %{foo: :bar}}
+  end
+
 
   test "gets and sets signed session cookie" do
     conn = conn(:get, "/")

@@ -48,6 +48,7 @@ plug Plug.Session,
   key: "_SOMETHING_HERE_session",
   domain: '.myapp.com',
   secure: true,
+  signing_with_salt: true,
   signing_salt: "signing salt",
   encrypt: true,
   encryption_salt: "encryption salt",
@@ -106,6 +107,17 @@ Plug & Rails must use the same strategy for serializing cookie data.
     serializer: RailsMarshalSessionSerializer
   end
   ```
+  
+- __Rails 3.2__: Rails 3.2 uses unsalted signing, to make Phoenix share session with Rails 3.2 project you need to set up `ExMarshal` mentioned above, with following configuration in your `Plug.Session`:
+
+  ```elixir
+  plug Plug.Session,
+    store: PlugRailsCookieSessionStore,
+    # ... see encryption/ExMarshal config above
+    signing_with_salt: false,
+  end
+  ```
+  
 
 #### That's it!
 
