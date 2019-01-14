@@ -5,11 +5,11 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.14.5">
-    <title>API Reference – plug_rails_cookie_session_store v0.2.0</title>
+    <title>API Reference – plug_rails_cookie_session_store v0.3.0</title>
     <link rel="stylesheet" href="dist/app-a07cea761b.css" />
-    
+
       <link rel="canonical" href="https://hexdocs.pm/plug_rails_cookie_session_store/api-reference.html" />
-    
+
     <script src="dist/sidebar_items-dd843db623.js"></script>
   </head>
   <body data-type="extras">
@@ -21,17 +21,17 @@
 </button>
 <section class="sidebar">
 
-  
+
   <a href="api-reference.html" class="sidebar-projectLink">
     <div class="sidebar-projectDetails">
       <h1 class="sidebar-projectName">
         plug_rails_cookie_session_store
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.2.0
+        v0.3.0
       </h2>
     </div>
-    
+
   </a>
 
   <div class="sidebar-search">
@@ -42,13 +42,13 @@
   <ul class="sidebar-listNav">
     <li><a id="extras-list" href="#full-list">Pages</a></li>
 
-    
+
       <li><a id="modules-list" href="#full-list">Modules</a></li>
-    
 
-    
 
-    
+
+
+
   </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
@@ -60,7 +60,7 @@
 
 
 <h1>
-  <small class="visible-xs">plug_rails_cookie_session_store v0.2.0</small>
+  <small class="visible-xs">plug_rails_cookie_session_store v0.3.0</small>
   API Reference
 </h1>
 
@@ -74,14 +74,14 @@
     <div class="summary">
       <div class="summary-row">
   <div class="summary-signature"><a href="PlugRailsCookieSessionStore.html">PlugRailsCookieSessionStore</a></div>
-  
+
     <div class="summary-synopsis"><p>Stores the session in a cookie</p>
 </div>
-  
+
 </div>
 <div class="summary-row">
   <div class="summary-signature"><a href="PlugRailsCookieSessionStore.MessageEncryptor.html">PlugRailsCookieSessionStore.MessageEncryptor</a></div>
-  
+
     <div class="summary-synopsis"><p><code class="inline">MessageEncryptor</code> is a simple way to encrypt values which get stored
 somewhere you don’t trust.
 The cipher text and initialization vector are base64 encoded and
@@ -104,18 +104,18 @@ encrypted = MessageEncryptor.encrypt_and_sign(encryptor, data)
 decrypted = MessageEncryptor.verify_and_decrypt(encryptor, encrypted)
 decrypted.current_user.name # =&gt; &quot;José&quot;</code></pre>
 </div>
-  
+
 </div>
 <div class="summary-row">
   <div class="summary-signature"><a href="PlugRailsCookieSessionStore.MessageVerifier.html">PlugRailsCookieSessionStore.MessageVerifier</a></div>
-  
+
     <div class="summary-synopsis"><p><code class="inline">MessageVerifier</code> makes it easy to generate and verify messages
 which are signed to prevent tampering.
 For example, the cookie store uses this verifier to send data
 to the client. Although the data can be read by the client, he
 cannot tamper it</p>
 </div>
-  
+
 </div>
 
     </div>
@@ -146,4 +146,3 @@ cannot tamper it</p>
   <script src="dist/app-4aef34ad5f.js"></script>
   </body>
 </html>
-

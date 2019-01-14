@@ -5,11 +5,11 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.14.5">
-    <title>PlugRailsCookieSessionStore.MessageEncryptor – plug_rails_cookie_session_store v0.2.0</title>
+    <title>PlugRailsCookieSessionStore.MessageEncryptor – plug_rails_cookie_session_store v0.3.0</title>
     <link rel="stylesheet" href="dist/app-a07cea761b.css" />
-    
+
       <link rel="canonical" href="https://hexdocs.pm/plug_rails_cookie_session_store/PlugRailsCookieSessionStore.MessageEncryptor.html" />
-    
+
     <script src="dist/sidebar_items-dd843db623.js"></script>
   </head>
   <body data-type="modules">
@@ -21,17 +21,17 @@
 </button>
 <section class="sidebar">
 
-  
+
   <a href="api-reference.html" class="sidebar-projectLink">
     <div class="sidebar-projectDetails">
       <h1 class="sidebar-projectName">
         plug_rails_cookie_session_store
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.2.0
+        v0.3.0
       </h2>
     </div>
-    
+
   </a>
 
   <div class="sidebar-search">
@@ -42,13 +42,13 @@
   <ul class="sidebar-listNav">
     <li><a id="extras-list" href="#full-list">Pages</a></li>
 
-    
+
       <li><a id="modules-list" href="#full-list">Modules</a></li>
-    
 
-    
 
-    
+
+
+
   </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
@@ -60,13 +60,13 @@
 
 
       <h1>
-        <small class="visible-xs">plug_rails_cookie_session_store v0.2.0</small>
+        <small class="visible-xs">plug_rails_cookie_session_store v0.3.0</small>
         PlugRailsCookieSessionStore.MessageEncryptor
-        
-        
+
+
       </h1>
 
-      
+
         <section id="moduledoc">
           <p><code class="inline">MessageEncryptor</code> is a simple way to encrypt values which get stored
 somewhere you don’t trust.
@@ -91,9 +91,9 @@ decrypted = MessageEncryptor.verify_and_decrypt(encryptor, encrypted)
 decrypted.current_user.name # =&gt; &quot;José&quot;</code></pre>
 
         </section>
-      
 
-      
+
+
         <section id="summary" class="details-list">
           <h1 class="section-heading">
             <a class="hover-link" href="#summary">
@@ -101,9 +101,9 @@ decrypted.current_user.name # =&gt; &quot;José&quot;</code></pre>
             </a>
             Summary
           </h1>
-          
 
-          
+
+
   <div class="summary-functions summary">
     <h2>
       <a href="#functions">Functions</a>
@@ -112,36 +112,36 @@ decrypted.current_user.name # =&gt; &quot;José&quot;</code></pre>
   <div class="summary-signature">
     <a href="#encrypt_and_sign/4">encrypt_and_sign(message, secret, sign_secret, cipher \\ :aes_cbc256)</a>
   </div>
-  
+
     <div class="summary-synopsis"><p>Encrypts and signs a message</p>
 </div>
-  
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#verify_and_decrypt/4">verify_and_decrypt(encrypted, secret, sign_secret, cipher \\ :aes_cbc256)</a>
   </div>
-  
+
     <div class="summary-synopsis"><p>Decrypts and verifies a message.
 We need to verify the message in order to avoid padding attacks.
 Reference: http://www.limited-entropy.com/padding-oracle-attacks</p>
 </div>
-  
+
 </div>
 
   </div>
 
 
-          
 
-          
+
+
 
         </section>
-      
 
-      
 
-      
+
+
+
         <section id="functions" class="details-list">
           <h1 class="section-heading">
             <a class="hover-link" href="#functions">
@@ -150,17 +150,17 @@ Reference: http://www.limited-entropy.com/padding-oracle-attacks</p>
             Functions
           </h1>
           <div class="detail" id="encrypt_and_sign/4">
-  
+
     <span id="encrypt_and_sign/3" />
-  
+
   <div class="detail-header">
     <a href="#encrypt_and_sign/4" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">encrypt_and_sign(message, secret, sign_secret, cipher \\ :aes_cbc256)</span>
-    
-    
-    
+
+
+
   </div>
   <section class="docstring">
     <p>Encrypts and signs a message.</p>
@@ -168,17 +168,17 @@ Reference: http://www.limited-entropy.com/padding-oracle-attacks</p>
   </section>
 </div>
 <div class="detail" id="verify_and_decrypt/4">
-  
+
     <span id="verify_and_decrypt/3" />
-  
+
   <div class="detail-header">
     <a href="#verify_and_decrypt/4" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">verify_and_decrypt(encrypted, secret, sign_secret, cipher \\ :aes_cbc256)</span>
-    
-    
-    
+
+
+
   </div>
   <section class="docstring">
     <p>Decrypts and verifies a message.
@@ -189,11 +189,11 @@ Reference: http://www.limited-entropy.com/padding-oracle-attacks</p>
 </div>
 
         </section>
-      
 
-      
 
-      
+
+
+
           <footer class="footer">
         <p>
           <span class="line">
@@ -214,4 +214,3 @@ Reference: http://www.limited-entropy.com/padding-oracle-attacks</p>
   <script src="dist/app-4aef34ad5f.js"></script>
   </body>
 </html>
-
