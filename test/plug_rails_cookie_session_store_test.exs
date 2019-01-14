@@ -13,7 +13,9 @@ defmodule PlugRailsCookieSessionStoreTest do
 
   @secret String.duplicate("abcdef0123456789", 8)
   @signing_opts Plug.Session.init(Keyword.put(@default_opts, :encrypt, false))
-  @signing_without_salt_opts Plug.Session.init(Keyword.put(@default_opts, :signing_with_salt, false))
+  @signing_without_salt_opts Plug.Session.init(
+                               Keyword.put(@default_opts, :signing_with_salt, false)
+                             )
   @encrypted_opts Plug.Session.init(@default_opts)
 
   defmodule CustomSerializer do
@@ -27,7 +29,10 @@ defmodule PlugRailsCookieSessionStoreTest do
     def decode(nil), do: {:ok, nil}
     def decode(_), do: :error
   end
-  @custom_serializer_opts Plug.Session.init(Keyword.put(@default_opts, :serializer, CustomSerializer))
+
+  @custom_serializer_opts Plug.Session.init(
+                            Keyword.put(@default_opts, :serializer, CustomSerializer)
+                          )
 
   defp sign_conn(conn, secret \\ @secret) do
     put_in(conn.secret_key_base, secret)
@@ -76,10 +81,12 @@ defmodule PlugRailsCookieSessionStoreTest do
   end
 
   test "uses specified key generator opts" do
-    opts = @default_opts
-            |> Keyword.put(:key_iterations, 2000)
-            |> Keyword.put(:key_length, 64)
-            |> Keyword.put(:key_digest, :sha)
+    opts =
+      @default_opts
+      |> Keyword.put(:key_iterations, 2000)
+      |> Keyword.put(:key_length, 64)
+      |> Keyword.put(:key_digest, :sha)
+
     key_generator_opts = CookieStore.init(opts).key_opts
     assert key_generator_opts[:iterations] == 2000
     assert key_generator_opts[:length] == 64
@@ -113,15 +120,18 @@ defmodule PlugRailsCookieSessionStoreTest do
     conn = %{secret_key_base: @secret}
     cookie = CookieStore.put(conn, nil, %{foo: :bar}, @signing_without_salt_opts.store_config)
     assert is_binary(cookie)
-    assert CookieStore.get(conn, cookie, @signing_without_salt_opts.store_config) == {nil, %{foo: :bar}}
+
+    assert CookieStore.get(conn, cookie, @signing_without_salt_opts.store_config) ==
+             {nil, %{foo: :bar}}
   end
 
-
   test "gets and sets signed session cookie" do
-    conn = conn(:get, "/")
-           |> sign_conn()
-           |> put_session(:foo, "bar")
-           |> send_resp(200, "")
+    conn =
+      conn(:get, "/")
+      |> sign_conn()
+      |> put_session(:foo, "bar")
+      |> send_resp(200, "")
+
     assert conn(:get, "/")
            |> recycle_cookies(conn)
            |> sign_conn()
@@ -129,11 +139,13 @@ defmodule PlugRailsCookieSessionStoreTest do
   end
 
   test "deletes signed session cookie" do
-    conn = conn(:get, "/")
-           |> sign_conn()
-           |> put_session(:foo, :bar)
-           |> configure_session(drop: true)
-           |> send_resp(200, "")
+    conn =
+      conn(:get, "/")
+      |> sign_conn()
+      |> put_session(:foo, :bar)
+      |> configure_session(drop: true)
+      |> send_resp(200, "")
+
     assert conn(:get, "/")
            |> recycle_cookies(conn)
            |> sign_conn()
@@ -150,10 +162,12 @@ defmodule PlugRailsCookieSessionStoreTest do
   end
 
   test "gets and sets encrypted session cookie" do
-    conn = conn(:get, "/")
-           |> encrypt_conn()
-           |> put_session(:foo, "bar")
-           |> send_resp(200, "")
+    conn =
+      conn(:get, "/")
+      |> encrypt_conn()
+      |> put_session(:foo, "bar")
+      |> send_resp(200, "")
+
     assert conn(:get, "/")
            |> recycle_cookies(conn)
            |> encrypt_conn()
@@ -161,11 +175,13 @@ defmodule PlugRailsCookieSessionStoreTest do
   end
 
   test "deletes encrypted session cookie" do
-    conn = conn(:get, "/")
-           |> encrypt_conn()
-           |> put_session(:foo, :bar)
-           |> configure_session(drop: true)
-           |> send_resp(200, "")
+    conn =
+      conn(:get, "/")
+      |> encrypt_conn()
+      |> put_session(:foo, :bar)
+      |> configure_session(drop: true)
+      |> send_resp(200, "")
+
     assert conn(:get, "/")
            |> recycle_cookies(conn)
            |> encrypt_conn()
@@ -178,14 +194,18 @@ defmodule PlugRailsCookieSessionStoreTest do
     conn = %{secret_key_base: @secret}
     cookie = CookieStore.put(conn, nil, %{foo: :bar}, @custom_serializer_opts.store_config)
     assert is_binary(cookie)
-    assert CookieStore.get(conn, cookie, @custom_serializer_opts.store_config) == {nil, %{foo: :bar}}
+
+    assert CookieStore.get(conn, cookie, @custom_serializer_opts.store_config) ==
+             {nil, %{foo: :bar}}
   end
 
   test "gets and sets custom serialized session cookie" do
-    conn = conn(:get, "/")
-           |> custom_serialize_conn()
-           |> put_session(:foo, "bar")
-           |> send_resp(200, "")
+    conn =
+      conn(:get, "/")
+      |> custom_serialize_conn()
+      |> put_session(:foo, "bar")
+      |> send_resp(200, "")
+
     assert conn(:get, "/")
            |> recycle_cookies(conn)
            |> custom_serialize_conn()
@@ -193,11 +213,13 @@ defmodule PlugRailsCookieSessionStoreTest do
   end
 
   test "deletes custom serialized session cookie" do
-    conn = conn(:get, "/")
-           |> custom_serialize_conn()
-           |> put_session(:foo, :bar)
-           |> configure_session(drop: true)
-           |> send_resp(200, "")
+    conn =
+      conn(:get, "/")
+      |> custom_serialize_conn()
+      |> put_session(:foo, :bar)
+      |> configure_session(drop: true)
+      |> send_resp(200, "")
+
     assert conn(:get, "/")
            |> recycle_cookies(conn)
            |> custom_serialize_conn()
