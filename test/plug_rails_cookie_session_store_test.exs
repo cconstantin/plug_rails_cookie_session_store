@@ -19,12 +19,12 @@ defmodule PlugRailsCookieSessionStoreTest do
   @encrypted_opts Plug.Session.init(@default_opts)
 
   defmodule CustomSerializer do
-    def encode(%{foo: "bar"}), do: {:ok, "encoded session"}
+    def encode(%{"foo" => "bar"}), do: {:ok, "encoded session"}
     def encode(%{foo: :bar}), do: {:ok, "another encoded session"}
     def encode(%{}), do: {:ok, ""}
     def encode(_), do: :error
 
-    def decode("encoded session"), do: {:ok, %{foo: "bar"}}
+    def decode("encoded session"), do: {:ok, %{"foo" => "bar"}}
     def decode("another encoded session"), do: {:ok, %{foo: :bar}}
     def decode(nil), do: {:ok, nil}
     def decode(_), do: :error
@@ -206,10 +206,13 @@ defmodule PlugRailsCookieSessionStoreTest do
       |> put_session(:foo, "bar")
       |> send_resp(200, "")
 
-    assert conn(:get, "/")
-           |> recycle_cookies(conn)
-           |> custom_serialize_conn()
-           |> get_session(:foo) == "bar"
+    res =
+      conn(:get, "/")
+      |> recycle_cookies(conn)
+      |> custom_serialize_conn()
+      |> get_session(:foo)
+
+    assert res == "bar"
   end
 
   test "deletes custom serialized session cookie" do
