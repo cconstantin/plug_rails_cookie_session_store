@@ -11,11 +11,9 @@ Add PlugRailsCookieSessionStore as a dependency to your `mix.exs` file:
 
 ```elixir
 def deps do
-  [{:plug_rails_cookie_session_store, "~> 0.1"}]
+  [{:plug_rails_cookie_session_store, "~> 0.3"}]
 end
 ```
-
-And do not forget to add `:plug_rails_cookie_session_store` to the applications list.
 
 ## How to use with Phoenix
 
@@ -26,8 +24,16 @@ There are 4 things to copy:
 * signing_salt
 * encryption_salt
 * session_key
- 
-The `secret_key_base` can be found usually in the Rails' `secrets.yml` file and should be copied to Phoenix's `config.exs` file. There should already be a key named like that and you should override it.
+
+Since Rails 5.2, `secret_key_base` in test and development is derived as a MD5 hash of the application's name. To fetch key value you can run:
+
+```
+Rails.application.secret_key_base
+```
+
+https://www.rubydoc.info/github/rails/rails/Rails%2FApplication:secret_key_base
+
+The `secret_key_base` should be copied to Phoenix's `config.exs` file. There should already be a key named like that and you should override it.
 
 The other three values can be found somewhere in the initializers directory of your Rails project. Some people don't set the `signing_salt` and `encryption_salt`. If you don't find them, set them like so:
 
@@ -37,7 +43,7 @@ Rails.application.config.action_dispatch.encrypted_cookie_salt =  'encryption sa
 Rails.application.config.action_dispatch.encrypted_signed_cookie_salt = 'signing salt'
 ```
 
-#### Configure the Cookie Store in Phoenix. 
+#### Configure the Cookie Store in Phoenix.
 
 Edit the `endpoint.ex` file and add the following:
 
@@ -71,7 +77,7 @@ Plug & Rails must use the same strategy for serializing cookie data.
     # ... see encryption config above
     serializer: Poison
   end
-  ```  
+  ```
 
   You can confirm that your app uses JSON by searching for
 
@@ -107,7 +113,7 @@ Plug & Rails must use the same strategy for serializing cookie data.
     serializer: RailsMarshalSessionSerializer
   end
   ```
-  
+
 - __Rails 3.2__: Rails 3.2 uses unsalted signing, to make Phoenix share session with Rails 3.2 project you need to set up `ExMarshal` mentioned above, with following configuration in your `Plug.Session`:
 
   ```elixir
@@ -117,7 +123,7 @@ Plug & Rails must use the same strategy for serializing cookie data.
     signing_with_salt: false,
   end
   ```
-  
+
 
 #### That's it!
 
@@ -126,7 +132,7 @@ To test it, set a session value in your Rails application:
 ```elixir
 session[:foo] = 'bar'
 ```
-    
+
 And print it on Phoenix in whatever Controller you want:
 
 ```elixir
