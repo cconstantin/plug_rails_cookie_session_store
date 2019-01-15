@@ -64,8 +64,8 @@ defmodule PlugRailsCookieSessionStoreTest do
     end
   end
 
-  test "requires the secret to be at least 64 bytes" do
-    assert_raise ArgumentError, ~r/to be at least 64 bytes/, fn ->
+  test "requires the secret to be at least 32 bytes" do
+    assert_raise ArgumentError, ~r/to be at least 32 bytes/, fn ->
       conn(:get, "/")
       |> sign_conn("abcdef")
       |> put_session(:foo, "bar")
