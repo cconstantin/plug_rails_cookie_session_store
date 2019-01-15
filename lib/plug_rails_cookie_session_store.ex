@@ -35,7 +35,7 @@ defmodule PlugRailsCookieSessionStore do
     when generating the encryption and signing keys. Defaults to 32;
 
   * `:key_digest` - option passed to `Plug.Crypto.KeyGenerator`
-    when generating the encryption and signing keys. Defaults to `:sha256';
+    when generating the encryption and signing keys. Defaults to `:sha256`;
 
   * `:serializer` - cookie serializer module that defines `encode/1` and
     `decode/1` returning an `{:ok, value}` tuple. Defaults to
