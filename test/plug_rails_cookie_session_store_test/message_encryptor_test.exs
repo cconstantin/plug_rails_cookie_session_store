@@ -1,7 +1,7 @@
 defmodule PlugRailsCookieSessionStore.MessageEncryptorTest do
   use ExUnit.Case, async: true
 
-  alias Plug.Crypto.MessageEncryptor, as: ME
+  alias PlugRailsCookieSessionStore.MessageEncryptor, as: ME
 
   @right String.duplicate("abcdefgh", 4)
   @wrong String.duplicate("12345678", 4)
