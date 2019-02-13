@@ -52,6 +52,30 @@ defmodule PlugRailsCookieSessionStore.MessageEncryptor do
     end
   end
 
+  @doc """
+  Encrypts and signs a message.
+  """
+  def encrypt_and_authenticate(message, secret, cipher \\ :aes_gcm)
+      when is_binary(message) and is_binary(secret) do
+    iv = :crypto.strong_rand_bytes(16)
+
+    {message, auth_tag} = encrypt({"", pad_message(message), 16}, cipher, secret, iv)
+    message
+    |> Base.encode64()
+    |> Kernel.<>("--#{Base.encode64(iv)}")
+    |> Kernel.<>("--#{Base.encode64(auth_tag)}")
+  end
+
+  @doc """
+  Decrypts and authenticates a message.
+  """
+  def authenticate_and_decrypt(encrypted, secret, cipher \\ :aes_gcm)
+      when is_binary(encrypted) and is_binary(secret) do
+    [encrypted, iv, auth_tag] = String.split(encrypted, "--") |> Enum.map(&Base.decode64!/1)
+    result = {"", encrypted, auth_tag} |> decrypt(cipher, secret, iv) |> unpad_message
+    result
+  end
+
   defp encrypt(message, cipher, secret, iv) do
     :crypto.block_encrypt(cipher, trim_secret(secret), iv, message)
   end
@@ -64,6 +88,10 @@ defmodule PlugRailsCookieSessionStore.MessageEncryptor do
     bytes_remaining = rem(byte_size(msg), 16)
     padding_size = 16 - bytes_remaining
     msg <> :binary.copy(<<padding_size>>, padding_size)
+  end
+
+  defp unpad_message(:error) do
+    :error
   end
 
   defp unpad_message(msg) do

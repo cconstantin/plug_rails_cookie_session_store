@@ -18,9 +18,18 @@ defmodule PlugRailsCookieSessionStore do
 
   ## Options
 
+  * `:use_authenticated_encryption` - specify whether to use authenticated encryption,
+    defaults to false. This is the default behaviour in Rails 5.2 and higher. If true,
+    `:authenticated_encryption_salt` is required. If false, `:encryption_salt` and `:signing_salt`
+    are required;
+
+  * `:authenticated_encryption_salt` - a salt used with `conn.secret_key_base` to generate
+    a key for AEAD encrypting/decrypting a cookie;
+
   * `:encrypt` - specify whether to encrypt cookies, defaults to true.
     When this option is false, the cookie is still signed, meaning it
-    can't be tempered with but its contents can be read;
+    can't be tempered with but its contents can be read. Only applies if
+    if `:use_authenticated_encryption` is false.
 
   * `:encryption_salt` - a salt used with `conn.secret_key_base` to generate
     a key for encrypting/decrypting a cookie;
@@ -59,8 +68,7 @@ defmodule PlugRailsCookieSessionStore do
   alias PlugRailsCookieSessionStore.MessageEncryptor
 
   def init(opts) do
-    encryption_salt = check_encryption_salt(opts)
-    signing_salt = check_signing_salt(opts)
+    {use_authenticated_encryption, {authenticated_encryption_salt, encryption_salt, signing_salt}} = parse_salts(opts)
 
     iterations = Keyword.get(opts, :key_iterations, 1000)
     length = Keyword.get(opts, :key_length, 32)
@@ -70,6 +78,8 @@ defmodule PlugRailsCookieSessionStore do
     serializer = check_serializer(opts[:serializer] || :external_term_format)
 
     %{
+      use_authenticated_encryption: use_authenticated_encryption,
+      authenticated_encryption_salt: authenticated_encryption_salt,
       encryption_salt: encryption_salt,
       signing_salt: signing_salt,
       key_opts: key_opts,
@@ -81,14 +91,21 @@ defmodule PlugRailsCookieSessionStore do
     key_opts = opts.key_opts
     cookie = cookie |> URI.decode_www_form()
 
-    if key = opts.encryption_salt do
-      MessageEncryptor.verify_and_decrypt(
+    if opts.use_authenticated_encryption do
+      MessageEncryptor.authenticate_and_decrypt(
         cookie,
-        derive(conn, key, key_opts),
-        derive(conn, opts.signing_salt, key_opts)
+        derive(conn, opts.authenticated_encryption_salt, key_opts |> Keyword.put(:key_digest, :sha1))
       )
     else
-      MessageVerifier.verify(cookie, derive(conn, opts.signing_salt, key_opts))
+      if key = opts.encryption_salt do
+        MessageEncryptor.verify_and_decrypt(
+          cookie,
+          derive(conn, key, key_opts),
+          derive(conn, opts.signing_salt, key_opts)
+        )
+      else
+        MessageVerifier.verify(cookie, derive(conn, opts.signing_salt, key_opts))
+      end
     end
     |> decode(opts.serializer)
   end
@@ -97,14 +114,21 @@ defmodule PlugRailsCookieSessionStore do
     binary = encode(term, opts.serializer)
     key_opts = opts.key_opts
 
-    if key = opts.encryption_salt do
-      MessageEncryptor.encrypt_and_sign(
+    if opts.use_authenticated_encryption do
+      MessageEncryptor.encrypt_and_authenticate(
         binary,
-        derive(conn, key, key_opts),
-        derive(conn, opts.signing_salt, key_opts)
+        derive(conn, opts.authenticated_encryption_salt, key_opts)
       )
     else
-      MessageVerifier.sign(binary, derive(conn, opts.signing_salt, key_opts))
+      if key = opts.encryption_salt do
+        MessageEncryptor.encrypt_and_sign(
+          binary,
+          derive(conn, key, key_opts),
+          derive(conn, opts.signing_salt, key_opts)
+        )
+      else
+        MessageVerifier.sign(binary, derive(conn, opts.signing_salt, key_opts))
+      end
     end
     |> URI.encode_www_form()
   end
@@ -150,21 +174,39 @@ defmodule PlugRailsCookieSessionStore do
 
   defp validate_secret_key_base(secret_key_base), do: secret_key_base
 
-  defp check_signing_salt(opts) do
-    if Keyword.get(opts, :signing_with_salt, true) do
-      case opts[:signing_salt] do
-        nil -> raise ArgumentError, "cookie store expects :signing_salt as option"
-        salt -> salt
-      end
+  defp parse_salts(opts) do
+    use_authenticated_encryption = Keyword.get(opts, :use_authenticated_encryption, false)
+   {use_authenticated_encryption, parse_salts(use_authenticated_encryption, opts)}
+  end
+
+  defp parse_salts(true, opts) do
+    {check_authenticated_encryption_salt(opts), nil, nil}
+  end
+
+  defp parse_salts(false, opts) do
+    {nil, check_encryption_salt(opts), check_signing_salt(opts)}
+  end
+
+  defp check_authenticated_encryption_salt(opts) do
+    case opts[:authenticated_encryption_salt] do
+      nil -> raise ArgumentError, "cookie store expects :authenticated_encryption_salt as option"
+      salt -> salt
     end
   end
 
   defp check_encryption_salt(opts) do
     if Keyword.get(opts, :encrypt, true) do
       case opts[:encryption_salt] do
-        nil -> raise ArgumentError, "encrypted cookie store expects :encryption_salt as option"
+        nil -> raise ArgumentError, "cookie store expects :encryption_salt as option"
         salt -> salt
       end
+    end
+  end
+
+  defp check_signing_salt(opts) do
+    case opts[:signing_salt] do
+      nil -> raise ArgumentError, "cookie store expects :signing_salt as option"
+      salt -> salt
     end
   end
 
