@@ -11,15 +11,11 @@ defmodule PlugRailsCookieSessionStore.MessageVerifier do
   Decodes and verifies the encoded binary was not tampared with.
   """
   def verify(binary, secret) when is_binary(binary) and is_binary(secret) do
-    case String.split(binary, "--") do
-      [content, digest] when content != "" and digest != "" ->
-        if Plug.Crypto.secure_compare(digest(secret, content), digest) do
-          {:ok, Base.decode64!(content)}
-        else
-          :error
-        end
-      _ ->
-        :error
+    with [content, digest] when content != "" and digest != "" <- String.split(binary, "--"),
+         true <- Plug.Crypto.secure_compare(digest(secret, content), digest) do
+      {:ok, Base.decode64!(content, ignore: :whitespace)}
+    else
+      _ -> :error
     end
   end
 
