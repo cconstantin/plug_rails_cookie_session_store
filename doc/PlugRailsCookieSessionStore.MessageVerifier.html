@@ -1,52 +1,73 @@
-    <!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.14.5">
-    <title>PlugRailsCookieSessionStore.MessageVerifier – plug_rails_cookie_session_store v0.3.0</title>
-    <link rel="stylesheet" href="dist/app-a07cea761b.css" />
+    <meta name="generator" content="ExDoc v0.24.2">
+    <meta name="project" content="plug_rails_cookie_session_store v2.0.0">
 
-      <link rel="canonical" href="https://hexdocs.pm/plug_rails_cookie_session_store/PlugRailsCookieSessionStore.MessageVerifier.html" />
+    <title>PlugRailsCookieSessionStore.MessageVerifier — plug_rails_cookie_session_store v2.0.0</title>
+    <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
 
-    <script src="dist/sidebar_items-dd843db623.js"></script>
+    <script src="dist/sidebar_items-45722afe85.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-f27ff079945e43879c46.js"></script>
+
+
   </head>
   <body data-type="modules">
-    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+    <script>
 
-    <div class="main">
-<button class="sidebar-toggle">
-  <i class="icon-menu"></i>
+      try {
+        if (localStorage.getItem('night-mode') === 'true') {
+          document.body.classList.add('night-mode');
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
 </button>
+
 <section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
 
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
 
-  <a href="api-reference.html" class="sidebar-projectLink">
+  <div class="sidebar-header">
     <div class="sidebar-projectDetails">
-      <h1 class="sidebar-projectName">
-        plug_rails_cookie_session_store
-      </h1>
-      <h2 class="sidebar-projectVersion">
-        v0.3.0
-      </h2>
+      <a href="api-reference.html" class="sidebar-projectName">
+plug_rails_cookie_session_store
+      </a>
+      <strong class="sidebar-projectVersion">
+        v2.0.0
+      </strong>
     </div>
 
-  </a>
-
-  <div class="sidebar-search">
-    <i class="icon-search"></i>
-    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
   </div>
 
   <ul class="sidebar-listNav">
-    <li><a id="extras-list" href="#full-list">Pages</a></li>
+    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
 
-
-      <li><a id="modules-list" href="#full-list">Modules</a></li>
-
-
-
+      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
 
 
   </ul>
@@ -58,135 +79,141 @@
   <div class="content-outer">
     <div id="content" class="content-inner">
 
-
       <h1>
-        <small class="visible-xs">plug_rails_cookie_session_store v0.3.0</small>
-        PlugRailsCookieSessionStore.MessageVerifier
-
+PlugRailsCookieSessionStore.MessageVerifier <small class="app-vsn">(plug_rails_cookie_session_store v2.0.0)</small>
 
       </h1>
 
 
         <section id="moduledoc">
-          <p><code class="inline">MessageVerifier</code> makes it easy to generate and verify messages
+<p><code class="inline">MessageVerifier</code> makes it easy to generate and verify messages
 which are signed to prevent tampering.
 For example, the cookie store uses this verifier to send data
 to the client. Although the data can be read by the client, he
 cannot tamper it.</p>
-
         </section>
-
 
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
             <a class="hover-link" href="#summary">
-              <i class="icon-link"></i>
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
             </a>
             Summary
           </h1>
-
-
 
   <div class="summary-functions summary">
     <h2>
       <a href="#functions">Functions</a>
     </h2>
-    <div class="summary-row">
+<div class="summary-row">
   <div class="summary-signature">
     <a href="#sign/2">sign(binary, secret)</a>
+
   </div>
 
-    <div class="summary-synopsis"><p>Signs a binary according to the given secret</p>
-</div>
+    <div class="summary-synopsis"><p>Signs a binary according to the given secret.</p></div>
 
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#verify/2">verify(binary, secret)</a>
-  </div>
-
-    <div class="summary-synopsis"><p>Decodes and verifies the encoded binary was not tampared with</p>
-</div>
-
-</div>
 
   </div>
 
+    <div class="summary-synopsis"><p>Decodes and verifies the encoded binary was not tampared with.</p></div>
 
+</div>
 
-
-
+  </div>
 
         </section>
-
-
-
 
 
         <section id="functions" class="details-list">
           <h1 class="section-heading">
             <a class="hover-link" href="#functions">
-              <i class="icon-link"></i>
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
             </a>
-            Functions
+Functions
           </h1>
-          <div class="detail" id="sign/2">
+          <div class="functions-list">
+<section class="detail" id="sign/2">
 
   <div class="detail-header">
     <a href="#sign/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
-    <span class="signature">sign(binary, secret)</span>
-
+    <h1 class="signature">sign(binary, secret)</h1>
 
 
   </div>
-  <section class="docstring">
-    <p>Signs a binary according to the given secret.</p>
 
+  <section class="docstring">
+
+<p>Signs a binary according to the given secret.</p>
   </section>
-</div>
-<div class="detail" id="verify/2">
+</section>
+<section class="detail" id="verify/2">
 
   <div class="detail-header">
     <a href="#verify/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
-    <span class="signature">verify(binary, secret)</span>
-
+    <h1 class="signature">verify(binary, secret)</h1>
 
 
   </div>
+
   <section class="docstring">
-    <p>Decodes and verifies the encoded binary was not tampared with.</p>
 
+<p>Decodes and verifies the encoded binary was not tampared with.</p>
   </section>
-</div>
+</section>
 
+          </div>
         </section>
 
-
-
-
-
-          <footer class="footer">
+      <footer class="footer">
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.5),
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.24.2) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
           </span>
           <span class="line">
-            designed by
-            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
-            </span>
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
         </p>
-        <button class="night-mode-toggle" />
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
       </footer>
     </div>
   </div>
 </section>
 </div>
-  <script src="dist/app-4aef34ad5f.js"></script>
+
+
   </body>
 </html>

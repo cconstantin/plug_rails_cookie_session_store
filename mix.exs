@@ -34,7 +34,7 @@ defmodule PlugRailsCookieSessionStore.Mixfile do
     [
       {:plug, ">= 1.11.0"},
       {:plug_crypto, ">= 1.2.0"},
-      {:ex_doc, ">= 0.0.0", only: :dev}
+      {:ex_doc, ">= 0.24.2", only: :dev}
     ]
   end
 end
