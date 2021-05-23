@@ -5,13 +5,18 @@ Rails compatible Plug session store.
 
 This allows you to share session information between Rails and a Plug-based framework like Phoenix.
 
+Version Information
+===================
+
+Version 2.0 and higher require OTP 22 or higher.
+
 ## Installation
 
 Add PlugRailsCookieSessionStore as a dependency to your `mix.exs` file:
 
 ```elixir
 def deps do
-  [{:plug_rails_cookie_session_store, "~> 1.0"}]
+  [{:plug_rails_cookie_session_store, "~> 2.0"}]
 end
 ```
 
