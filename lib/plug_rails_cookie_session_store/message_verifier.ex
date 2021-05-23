@@ -31,14 +31,7 @@ defmodule PlugRailsCookieSessionStore.MessageVerifier do
     encoded <> "--" <> digest(secret, encoded)
   end
 
-  # TODO: remove when we require OTP 22.1
-  if Code.ensure_loaded?(:crypto) and function_exported?(:crypto, :mac, 4) do
-    defp digest(secret, data) do
-      :crypto.mac(:hmac, :sha, secret, data) |> Base.encode16(case: :lower)
-    end
-  else
-    defp digest(secret, data) do
-      :crypto.hmac(:sha, secret, data) |> Base.encode16(case: :lower)
-    end
+  defp digest(secret, data) do
+    :crypto.mac(:hmac, :sha, secret, data) |> Base.encode16(case: :lower)
   end
 end

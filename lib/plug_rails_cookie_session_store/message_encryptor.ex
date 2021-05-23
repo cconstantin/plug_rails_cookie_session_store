@@ -24,7 +24,7 @@ defmodule PlugRailsCookieSessionStore.MessageEncryptor do
   @doc """
   Encrypts and signs a message.
   """
-  def encrypt_and_sign(message, secret, sign_secret, cipher \\ :aes_cbc256)
+  def encrypt_and_sign(message, secret, sign_secret, cipher \\ :aes_256_cbc)
       when is_binary(message) and is_binary(secret) and is_binary(sign_secret) do
     iv = :crypto.strong_rand_bytes(16)
 
@@ -41,7 +41,7 @@ defmodule PlugRailsCookieSessionStore.MessageEncryptor do
   We need to verify the message in order to avoid padding attacks.
   Reference: http://www.limited-entropy.com/padding-oracle-attacks
   """
-  def verify_and_decrypt(encrypted, secret, sign_secret, cipher \\ :aes_cbc256)
+  def verify_and_decrypt(encrypted, secret, sign_secret, cipher \\ :aes_256_cbc)
       when is_binary(encrypted) and is_binary(secret) and is_binary(sign_secret) do
     case MessageVerifier.verify(encrypted, sign_secret) do
       {:ok, verified} ->
@@ -53,11 +53,11 @@ defmodule PlugRailsCookieSessionStore.MessageEncryptor do
   end
 
   defp encrypt(message, cipher, secret, iv) do
-    :crypto.block_encrypt(cipher, trim_secret(secret), iv, message)
+    :crypto.crypto_one_time(cipher, trim_secret(secret), iv, message, true)
   end
 
   defp decrypt(encrypted, cipher, secret, iv) do
-    :crypto.block_decrypt(cipher, trim_secret(secret), iv, encrypted)
+    :crypto.crypto_one_time(cipher, trim_secret(secret), iv, encrypted, false)
   end
 
   defp pad_message(msg) do
