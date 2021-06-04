@@ -18,6 +18,10 @@ defmodule PlugRailsCookieSessionStoreTest do
                              )
   @encrypted_opts Plug.Session.init(@default_opts)
 
+  @authenticated_encrypted_opts Plug.Session.init(@default_opts
+                                                  |> Keyword.put(:use_authenticated_encryption, true)
+                                                  |> Keyword.put(:authenticated_encryption_salt, "authenticated encrypted cookie"))
+
   defmodule CustomSerializer do
     def encode(%{"foo" => "bar"}), do: {:ok, "encoded session"}
     def encode(%{foo: :bar}), do: {:ok, "another encoded session"}
@@ -43,6 +47,12 @@ defmodule PlugRailsCookieSessionStoreTest do
   defp encrypt_conn(conn) do
     put_in(conn.secret_key_base, @secret)
     |> Plug.Session.call(@encrypted_opts)
+    |> fetch_session
+  end
+
+  defp authenticated_encrypt_conn(conn) do
+    put_in(conn.secret_key_base, "edffda9d151781024e5a40d0d68d44f6")
+    |> Plug.Session.call(@authenticated_encrypted_opts)
     |> fetch_session
   end
 
@@ -227,5 +237,14 @@ defmodule PlugRailsCookieSessionStoreTest do
            |> recycle_cookies(conn)
            |> custom_serialize_conn()
            |> get_session(:foo) == nil
+  end
+
+  @tag :wip
+  test "deserializes Rails >5.2 session cookie" do
+    assert conn(:get, "/")
+           |> put_req_cookie("foobar", "XMxMwUhyiqs5gHWnmFQaWqRGg0vdvy4KHcKbhTUuGl2%2FAuFgLckh0grWkOh7s0zAd0bPeRlXSxZkGv0%3D--djXWCUYYPM5HFzUu--gYdZB9mHt5C0fkTjvnAZpg%3D%3D")
+           |> authenticated_encrypt_conn()
+           |> get_session(:foo) == 123
+
   end
 end
