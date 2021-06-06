@@ -72,8 +72,8 @@ defmodule PlugRailsCookieSessionStore.MessageEncryptor do
   def authenticate_and_decrypt(encrypted, secret, cipher \\ :aes_gcm)
       when is_binary(encrypted) and is_binary(secret) do
     [encrypted, iv, auth_tag] = String.split(encrypted, "--") |> Enum.map(&Base.decode64!/1)
-    result = {"", encrypted, auth_tag} |> decrypt(cipher, secret, iv) |> unpad_message
-    result
+    result = {"", encrypted, auth_tag} |> decrypt(cipher, secret, iv)
+    {:ok, result}
   end
 
   defp encrypt(message, cipher, secret, iv) do
