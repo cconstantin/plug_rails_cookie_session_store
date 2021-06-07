@@ -94,7 +94,7 @@ defmodule PlugRailsCookieSessionStore do
     if opts.use_authenticated_encryption do
       MessageEncryptor.authenticate_and_decrypt(
         cookie,
-        derive(conn, opts.authenticated_encryption_salt, key_opts |> Keyword.put(:key_digest, :sha1))
+        derive(conn, opts.authenticated_encryption_salt, key_opts |> Keyword.put(:digest, :sha))
       )
     else
       if key = opts.encryption_salt do
