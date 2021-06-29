@@ -2,11 +2,15 @@ defmodule PlugRailsCookieSessionStore.MessageEncryptor do
   @moduledoc ~S"""
   `MessageEncryptor` is a simple way to encrypt values which get stored
   somewhere you don't trust.
+
   The cipher text and initialization vector are base64 encoded and
   returned to you.
+
   This can be used in situations similar to the `MessageVerifier`, but where
   you don't want users to be able to determine the value of the payload.
+
   ## Example
+
       secret_key_base = "072d1e0157c008193fe48a670cce031faa4e..."
       encrypted_cookie_salt = "encrypted cookie"
       encrypted_signed_cookie_salt = "signed encrypted cookie"
@@ -17,6 +21,7 @@ defmodule PlugRailsCookieSessionStore.MessageEncryptor do
       encrypted = MessageEncryptor.encrypt_and_sign(encryptor, data)
       decrypted = MessageEncryptor.verify_and_decrypt(encryptor, encrypted)
       decrypted.current_user.name # => "José"
+
   """
 
   alias PlugRailsCookieSessionStore.MessageVerifier
@@ -38,6 +43,7 @@ defmodule PlugRailsCookieSessionStore.MessageEncryptor do
 
   @doc """
   Decrypts and verifies a message.
+
   We need to verify the message in order to avoid padding attacks.
   Reference: http://www.limited-entropy.com/padding-oracle-attacks
   """

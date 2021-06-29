@@ -50,6 +50,7 @@ defmodule PlugRailsCookieSessionStore do
                          signing_salt: "cookie store signing salt",
                          key_length: 64,
                          serializer: Poison
+
   """
 
   @behaviour Plug.Session.Store

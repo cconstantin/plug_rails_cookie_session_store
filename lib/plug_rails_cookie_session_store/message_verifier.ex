@@ -2,13 +2,14 @@ defmodule PlugRailsCookieSessionStore.MessageVerifier do
   @moduledoc """
   `MessageVerifier` makes it easy to generate and verify messages
   which are signed to prevent tampering.
+
   For example, the cookie store uses this verifier to send data
   to the client. Although the data can be read by the client, he
   cannot tamper it.
   """
 
   @doc """
-  Decodes and verifies the encoded binary was not tampared with.
+  Decodes and verifies the encoded binary was not tampered with.
   """
   def verify(binary, secret) when is_binary(binary) and is_binary(secret) do
     case String.split(binary, "--") do
