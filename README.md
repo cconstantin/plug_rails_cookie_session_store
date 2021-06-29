@@ -1,22 +1,28 @@
-PlugRailsCookieSessionStore
-===========================
+# PlugRailsCookieSessionStore
+
+[![Module Version](https://img.shields.io/hexpm/v/plug_rails_cookie_session_store.svg)](https://hex.pm/packages/plug_rails_cookie_session_store)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-lightgreen.svg)](https://hexdocs.pm/plug_rails_cookie_session_store/)
+[![Total Download](https://img.shields.io/hexpm/dt/plug_rails_cookie_session_store.svg)](https://hex.pm/packages/plug_rails_cookie_session_store)
+[![License](https://img.shields.io/hexpm/l/plug_rails_cookie_session_store.svg)](https://github.com/cconstantin/plug_rails_cookie_session_store/blob/master/LICENSE)
+[![Last Updated](https://img.shields.io/github/last-commit/cconstantin/plug_rails_cookie_session_store.svg)](https://github.com/cconstantin/plug_rails_cookie_session_store/commits/master)
 
 Rails compatible Plug session store.
 
 This allows you to share session information between Rails and a Plug-based framework like Phoenix.
 
-Version Information
-===================
+## Version Information
 
 Version 2.0 and higher require OTP 22 or higher.
 
 ## Installation
 
-Add PlugRailsCookieSessionStore as a dependency to your `mix.exs` file:
+Add `:plug_rails_cookie_session_store` as a dependency to your `mix.exs` file:
 
 ```elixir
 def deps do
-  [{:plug_rails_cookie_session_store, "~> 2.0"}]
+  [
+    {:plug_rails_cookie_session_store, "~> 2.0"}
+  ]
 end
 ```
 
@@ -84,7 +90,7 @@ Plug & Rails must use the same strategy for serializing cookie data.
   end
   ```
 
-  You can confirm that your app uses JSON by searching for
+  You can confirm that your app uses JSON by searching for:
 
   ```ruby
   Rails.application.config.action_dispatch.cookies_serializer = :json
@@ -143,3 +149,10 @@ And print it on Phoenix in whatever Controller you want:
 ```elixir
 Logger.debug get_session(conn, "foo")
 ```
+
+## Copyright and License
+
+Copyright (c) 2014 Chris Constantin
+
+Released under the MIT License, which can be found in the repository in
+[LICENSE.md](./LICENSE.md).
